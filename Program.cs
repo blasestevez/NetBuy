@@ -24,7 +24,7 @@ namespace LaChozaComercial
 
             builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
             {
-                options.Password.RequireDigit = true; // No requerir dígitos
+                options.Password.RequireDigit = false; // No requerir dígitos
                 options.Password.RequireLowercase = true; // No requerir minúsculas
                 options.Password.RequireNonAlphanumeric = false; // No requerir caracteres no alfanuméricos
                 options.Password.RequireUppercase = true; // No requerir mayúsculas
