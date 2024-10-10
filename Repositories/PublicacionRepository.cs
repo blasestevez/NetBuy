@@ -21,17 +21,19 @@ namespace LaChozaComercial.Repositories
         }
 
         // Obtener las publicaciones del usuario autenticado
-        public async Task<IEnumerable<Publicacion>> GetMisPublicacionesAsync(string nombreVendedor)
+        public async Task<IEnumerable<Publicacion>> GetMisPublicacionesAsync(string usuarioId)
         {
             return await dbContext.Publicaciones
-                .Where(p => p.NombreVendedor == nombreVendedor)
+                .Where(p => p.usuarioId == usuarioId)
                 .ToListAsync();
         }
 
         // Crear una nueva publicación y guardarla en la base de datos
         public async Task<Publicacion> CreatePublicacionAsync(Publicacion publicacion)
         {
-            await dbContext.Publicaciones.AddAsync(publicacion);
+            await dbContext.Publicaciones
+                .AddAsync(publicacion);
+
             await dbContext.SaveChangesAsync();
             return publicacion;
         }
@@ -39,7 +41,10 @@ namespace LaChozaComercial.Repositories
         // Obtener todas las publicaciones desde la base de datos
         public async Task<IEnumerable<Publicacion>> GetPublicacionesAsync()
         {
-            return await dbContext.Publicaciones.ToListAsync();
+
+            return await dbContext.Publicaciones
+                .Include(p => p.autorPublicacion)
+                .ToListAsync();
         }
     }
 }

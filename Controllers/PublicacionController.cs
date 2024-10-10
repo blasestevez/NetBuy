@@ -1,5 +1,6 @@
 ﻿using LaChozaComercial.Models;
 using LaChozaComercial.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -8,16 +9,18 @@ namespace LaChozaComercial.Controllers
     public class PublicacionController : Controller
     {
         private readonly IPublicacionRepository publicacionRepository;
+        private readonly UserManager<Usuario> userManager;
 
-        public PublicacionController(IPublicacionRepository publicacionRepository)
+        public PublicacionController(IPublicacionRepository publicacionRepository, UserManager<Usuario> userManager)
         {
             this.publicacionRepository = publicacionRepository;
+            this.userManager = userManager;
         }
 
         // Acción para mostrar las publicaciones del usuario autenticado
         public async Task<IActionResult> MisPublicaciones()
         {
-            var publicaciones = await publicacionRepository.GetMisPublicacionesAsync(User.Identity.Name);
+            var publicaciones = await publicacionRepository.GetMisPublicacionesAsync(userManager.GetUserId(User));
             return View(publicaciones);
         }
 
@@ -32,7 +35,7 @@ namespace LaChozaComercial.Controllers
         public async Task<IActionResult> CrearPublicacion(Publicacion publicacion)
         {
             // Agregar el nombre del vendedor a la publicación
-            publicacion.NombreVendedor = User.Identity.Name;
+            publicacion.usuarioId = userManager.GetUserId(User);
             await publicacionRepository.CreatePublicacionAsync(publicacion);
             return RedirectToAction("MisPublicaciones");
         }

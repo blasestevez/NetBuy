@@ -15,6 +15,11 @@ namespace LaChozaComercial.Models
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Precio { get; set; }
-        public string NombreVendedor { get; set; }
+
+        [Required]
+        public string usuarioId { get; set; }
+
+        [ForeignKey("usuarioId")]
+        public Usuario autorPublicacion { get; set; }
     }
 }
