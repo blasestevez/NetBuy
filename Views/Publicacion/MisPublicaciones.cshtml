@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LaChozaComercial.Models.Publicacion>
+
+<div class="max-w-7xl mx-auto bg-white shadow-lg border rounded-lg px-8 pt-6 pb-8 mb-4 text-center">
+    <h2 class="text-center text-2xl font-bold mb-4">Mis Publicaciones</h2>
+
+    <div class="grid-container">
+        @foreach (var publicacion in Model)
+        {
+            <div class="publicacion-item bg-gray-100 overflow-hidden">
+                <div class="p-4 border rounded">
+                    <h3 class="text-lg font-semibold mb-2">@publicacion.Titulo</h3>
+                    <p class="text-gray-700 mb-2">@publicacion.Descripcion</p>
+                    <p class="text-gray-700">Precio: @publicacion.Precio</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="mt-4">
+        <button class="bg-danger hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="location.href='@Url.Action("Logout", "Usuario")'">Cerrar Sesión</button>
+        <button class="bg-success hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2" onclick="location.href='@Url.Action("CrearPublicacion", "Publicacion")'">Crear Publicación</button>
+    </div>
+</div>
+
+<style>
+    .shadow-lg {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra leve */
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .publicacion-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+</style>

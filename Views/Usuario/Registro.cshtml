@@ -1,0 +1,40 @@
+﻿@model LaChozaComercial.Models.Usuario
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Login</h2>
+                    @using (Html.BeginForm("LoginAsync", "Usuario", FormMethod.Post))
+                    {
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.UserName, "Nombre de Usuario", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Ingrese su nombre de usuario", required = "required" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.PasswordHash, "Contraseña", new { @class = "form-label" })
+                            @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control", placeholder = "Ingrese su contraseña", required = "required" })
+                            @Html.ValidationMessageFor(m => m.PasswordHash, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(ViewBag.Error))
+                        {
+                            <div class="alert alert-danger mt-3" role="alert">
+                                @Html.Raw(ViewBag.Error)
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <p>¿Todavía no tienes una cuenta? <a href="@Url.Action("Registro", "Usuario")" class="text-primary">Regístrate aquí</a></p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@model LaChozaComercial.Models.Usuario
+
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="col-md-6 col-lg-4">
+        <h2 class="text-center mb-4">Login</h2>
+        @using (Html.BeginForm("LoginAsync", "Usuario", FormMethod.Post)) // Asegúrate de que apunte al método correcto
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card shadow-lg border rounded-lg">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.UserName, "Nombre de Usuario", new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control text-center", placeholder = "Ingrese su nombre de usuario" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.PasswordHash, "Contraseña", new { @class = "form-label fw-bold" })
+                        @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control text-center", placeholder = "Ingrese su contraseña" })
+                        @Html.ValidationMessageFor(m => m.PasswordHash, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                    </div>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert alert-danger mt-3 text-center" role="alert">
+                    @Html.Raw(ViewBag.Error)
+                </div>
+            }
+
+            <div class="text-center mt-3">
+                <p>¿Todavía no tienes una cuenta? <a href="@Url.Action("Registro", "Usuario")" class="text-primary">Regístrate aquí</a></p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .btn-primary {
+        background-color: #003366;
+        border-color: #003366;
+    }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #004080;
+            border-color: #004080;
+        }
+</style>

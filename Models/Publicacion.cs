@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LaChozaComercial.Models
 {
@@ -12,6 +13,7 @@ namespace LaChozaComercial.Models
         [Required]
         public string Descripcion { get; set; }
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Precio { get; set; }
         public string NombreVendedor { get; set; }
     }
