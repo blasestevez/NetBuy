@@ -1,3 +1,4 @@
+using AutoMapper;
 using LaChozaComercial.Data;
 using LaChozaComercial.Models;
 using LaChozaComercial.Repositories;
@@ -17,6 +18,8 @@ namespace LaChozaComercial
 
             builder.Services.AddDbContext<LaChozaComercialDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IPublicacionRepository, PublicacionRepository>();

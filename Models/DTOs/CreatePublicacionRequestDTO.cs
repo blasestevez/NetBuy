@@ -10,5 +10,7 @@ namespace LaChozaComercial.Models.DTOs
         public string Descripcion { get; set; }
         [Required]
         public decimal Precio { get; set; }
+        [Required]
+        public string usuarioId { get; set; }
     }
 }

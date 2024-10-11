@@ -1,4 +1,6 @@
-﻿using LaChozaComercial.Models;
+﻿using AutoMapper;
+using LaChozaComercial.Models;
+using LaChozaComercial.Models.DTOs;
 using LaChozaComercial.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +12,13 @@ namespace LaChozaComercial.Controllers
     {
         private readonly IPublicacionRepository publicacionRepository;
         private readonly UserManager<Usuario> userManager;
+        private readonly IMapper mapper;
 
-        public PublicacionController(IPublicacionRepository publicacionRepository, UserManager<Usuario> userManager)
+        public PublicacionController(IPublicacionRepository publicacionRepository, UserManager<Usuario> userManager, IMapper mapper)
         {
             this.publicacionRepository = publicacionRepository;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         // Acción para mostrar las publicaciones del usuario autenticado
@@ -36,7 +40,8 @@ namespace LaChozaComercial.Controllers
         {
             // Agregar el nombre del vendedor a la publicación
             publicacion.usuarioId = userManager.GetUserId(User);
-            await publicacionRepository.CreatePublicacionAsync(publicacion);
+            var createPublicacionDTO = mapper.Map<CreatePublicacionRequestDTO>(publicacion);
+            await publicacionRepository.CreatePublicacionAsync(createPublicacionDTO);
             return RedirectToAction("MisPublicaciones");
         }
 

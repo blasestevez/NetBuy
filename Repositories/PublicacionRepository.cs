@@ -1,5 +1,7 @@
-﻿using LaChozaComercial.Data;
+﻿using AutoMapper;
+using LaChozaComercial.Data;
 using LaChozaComercial.Models;
+using LaChozaComercial.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,38 +15,46 @@ namespace LaChozaComercial.Repositories
     {
         private readonly LaChozaComercialDbContext dbContext;
         private readonly UserManager<Usuario> userManager;
+        private readonly IMapper mapper;
 
-        public PublicacionRepository(LaChozaComercialDbContext dbContext, UserManager<Usuario> userManager)
+        public PublicacionRepository(LaChozaComercialDbContext dbContext, UserManager<Usuario> userManager, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         // Obtener las publicaciones del usuario autenticado
-        public async Task<IEnumerable<Publicacion>> GetMisPublicacionesAsync(string usuarioId)
+        public async Task<IEnumerable<PublicacionDTO>> GetMisPublicacionesAsync(string usuarioId)
         {
-            return await dbContext.Publicaciones
+            var publicaciones = await dbContext.Publicaciones
                 .Where(p => p.usuarioId == usuarioId)
                 .ToListAsync();
+
+            return mapper.Map<List<PublicacionDTO>>(publicaciones);
         }
 
         // Crear una nueva publicación y guardarla en la base de datos
-        public async Task<Publicacion> CreatePublicacionAsync(Publicacion publicacion)
+        public async Task<Publicacion> CreatePublicacionAsync(CreatePublicacionRequestDTO createPublicacionDTO)
         {
+            var publicacion = mapper.Map<Publicacion>(createPublicacionDTO);
+
             await dbContext.Publicaciones
                 .AddAsync(publicacion);
 
             await dbContext.SaveChangesAsync();
+
             return publicacion;
         }
 
         // Obtener todas las publicaciones desde la base de datos
-        public async Task<IEnumerable<Publicacion>> GetPublicacionesAsync()
+        public async Task<IEnumerable<PublicacionDTO>> GetPublicacionesAsync()
         {
-
-            return await dbContext.Publicaciones
+           var publicaciones = await dbContext.Publicaciones
                 .Include(p => p.autorPublicacion)
                 .ToListAsync();
+
+            return mapper.Map<List<PublicacionDTO>>(publicaciones);
         }
     }
 }

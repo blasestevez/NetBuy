@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LaChozaComercial.Models.Publicacion>
+﻿@model IEnumerable<LaChozaComercial.Models.DTOs.PublicacionDTO>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -21,7 +21,7 @@
                                         <h5 class="card-title">@publicacion.Titulo</h5>
                                         <p class="card-text">@publicacion.Descripcion</p>
                                         <p class="card-text"><strong>Precio:</strong> @publicacion.Precio</p>
-                                        <p class="card-text"><strong>Vendedor:</strong> @publicacion.autorPublicacion.UserName</p>
+                                        <p class="card-text"><strong>Vendedor:</strong> @publicacion.vendedorNombre</p>
                                     </div>
                                 </div>
                             </div>
