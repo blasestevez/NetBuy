@@ -21,33 +21,38 @@ namespace LaChozaComercial.Controllers
             this.mapper = mapper;
         }
 
-        // Acción para mostrar las publicaciones del usuario autenticado
+        // Mostrar las Publicaciones del Vendedor logeado
         public async Task<IActionResult> MisPublicaciones()
         {
+            // Llama a la funcion del repositorio buscando las publicaciones con el id del usuario logeado mediante UserManager
             var publicaciones = await publicacionRepository.GetMisPublicacionesAsync(userManager.GetUserId(User));
             return View(publicaciones);
         }
 
-        // Vista para crear una nueva publicación
         public IActionResult CrearPublicacion()
         {
             return View();
         }
 
-        // Acción para manejar la creación de una nueva publicación
+        // Crear una publicación tomando como parametro los datos enviados por el formulario
         [HttpPost]
         public async Task<IActionResult> CrearPublicacion(Publicacion publicacion)
         {
-            // Agregar el nombre del vendedor a la publicación
+            // Añade el id del vendedor a la publicacion mediante el UserManager
             publicacion.usuarioId = userManager.GetUserId(User);
+
+            // Mapeo de la publicacion a DTO para interactuar con el repositorio
             var createPublicacionDTO = mapper.Map<CreatePublicacionRequestDTO>(publicacion);
             await publicacionRepository.CreatePublicacionAsync(createPublicacionDTO);
+
+            // Luego de crear la publicacion redirecciona a la vista MisPublicaciones
             return RedirectToAction("MisPublicaciones");
         }
 
-        // Acción para mostrar todas las publicaciones en la base de datos
+        // Muestra las publicaciones de todos los vendedores
         public async Task<IActionResult> VerPublicaciones()
         {
+            // Llama a la funcion del repositorio obteniendo todas las publicaciones
             var publicaciones = await publicacionRepository.GetPublicacionesAsync();
             return View(publicaciones);
         }
