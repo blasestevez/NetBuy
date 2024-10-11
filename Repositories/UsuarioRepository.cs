@@ -1,5 +1,7 @@
-﻿using LaChozaComercial.Data;
+﻿using AutoMapper;
+using LaChozaComercial.Data;
 using LaChozaComercial.Models;
+using LaChozaComercial.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,25 +13,25 @@ namespace LaChozaComercial.Repositories
     {
         private readonly LaChozaComercialDbContext dbContext;
         private readonly UserManager<Usuario> userManager;
+        private readonly IMapper mapper;
 
-        public UsuarioRepository(LaChozaComercialDbContext dbContext, UserManager<Usuario> userManager)
+        public UsuarioRepository(LaChozaComercialDbContext dbContext, UserManager<Usuario> userManager, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         // Registro de un nuevo usuario con UserManager y DbContext
-        public async Task<Usuario> RegisterUserAsync(Usuario usuario, string contraseña)
+        public async Task<UsuarioDTO> RegisterUserAsync(CreateUsuarioRequestDTO usuarioRequestDTO)
         {
-            // Crear el usuario usando el UserManager
-            var result = await userManager.CreateAsync(usuario, contraseña);
+            var usuario = mapper.Map<Usuario>(usuarioRequestDTO);
+            var result = await userManager.CreateAsync(usuario, usuarioRequestDTO.password);
 
             // Verificar si la creación fue exitosa
             if (result.Succeeded)
             {
-                // No necesitas agregar el usuario de nuevo al DbContext
-                // return usuario; // Puedes retornar el usuario aquí si lo necesitas
-                return usuario; // Ya está agregado al DbContext
+                return mapper.Map<UsuarioDTO>(usuario); 
             }
 
             // Lanzar una excepción si hubo errores
@@ -38,7 +40,7 @@ namespace LaChozaComercial.Repositories
 
 
         // Iniciar sesión y devolver el usuario si la autenticación es correcta
-        public async Task<Usuario> LoginUserAsync(string nombreUsuario, string contraseña)
+        public async Task<UsuarioDTO> LoginUserAsync(string nombreUsuario, string contraseña)
         {
             var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.UserName == nombreUsuario);
             if (usuario == null)
@@ -52,7 +54,7 @@ namespace LaChozaComercial.Repositories
                 throw new Exception("Contraseña incorrecta");
             }
 
-            return usuario;
+            return mapper.Map<UsuarioDTO>(usuario);
         }
     }
 }

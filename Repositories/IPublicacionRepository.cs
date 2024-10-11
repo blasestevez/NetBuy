@@ -5,9 +5,9 @@ namespace LaChozaComercial.Repositories
 {
     public interface IPublicacionRepository
     {
-        Task<IEnumerable<PublicacionDTO>> GetMisPublicacionesAsync(string usuarioId);
-        Task<Publicacion> CreatePublicacionAsync(CreatePublicacionRequestDTO createPublicacionDTO);
-        Task<IEnumerable<PublicacionDTO>> GetPublicacionesAsync();
+        Task<List<PublicacionDTO>> GetMisPublicacionesAsync(string usuarioId);
+        Task<PublicacionDTO> CreatePublicacionAsync(CreatePublicacionRequestDTO createPublicacionDTO);
+        Task<List<PublicacionDTO>> GetPublicacionesAsync();
 
     }
 }

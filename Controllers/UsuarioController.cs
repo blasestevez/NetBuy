@@ -1,4 +1,5 @@
 ﻿using LaChozaComercial.Models;
+using LaChozaComercial.Models.DTOs;
 using LaChozaComercial.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,13 @@ namespace LaChozaComercial.Controllers
     {
         private readonly IUsuarioRepository usuarioRepository;
         private readonly SignInManager<Usuario> signInManager;
+        private readonly UserManager<Usuario> userManager;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository, SignInManager<Usuario> signInManager)
+        public UsuarioController(IUsuarioRepository usuarioRepository, SignInManager<Usuario> signInManager, UserManager<Usuario> userManager)
         {
             this.usuarioRepository = usuarioRepository;
             this.signInManager = signInManager;
+            this.userManager = userManager;
         }
 
         // Vista de Registro
@@ -26,13 +29,18 @@ namespace LaChozaComercial.Controllers
         // Método de registro con contraseña
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(Usuario usuario, string contraseña)
+        public async Task<IActionResult> Registro(CreateUsuarioRequestDTO usuarioRequestDTO)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var nuevoUsuario = await usuarioRepository.RegisterUserAsync(usuario, contraseña);
+                    if (!ChequearEmail(usuarioRequestDTO.email))
+                    {
+                        ModelState.AddModelError("Email", "El email proporcionado no es válido.");
+                        return View(usuarioRequestDTO);
+                    }
+                    var nuevoUsuario = await usuarioRepository.RegisterUserAsync(usuarioRequestDTO);
                     if (nuevoUsuario != null)
                     {
                         return RedirectToAction("Login");
@@ -44,7 +52,7 @@ namespace LaChozaComercial.Controllers
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
-            return View(usuario);
+            return View(usuarioRequestDTO);
         }
 
         // Vista de Login
@@ -56,13 +64,13 @@ namespace LaChozaComercial.Controllers
         // Método para manejar el inicio de sesión
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string nombreUsuario, string contraseña)
+        public async Task<IActionResult> Login(UsuarioDTO usuarioDTO)
         {
-            var result = await signInManager.PasswordSignInAsync(nombreUsuario, contraseña, isPersistent: false, lockoutOnFailure: false);
+            var result = await signInManager.PasswordSignInAsync(usuarioDTO.userName, usuarioDTO.password, isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 // Ya no necesitas buscar el usuario de nuevo, ya que el SignInManager lo maneja.
-                var usuario = await usuarioRepository.LoginUserAsync(nombreUsuario, contraseña);
+                var usuario = await userManager.FindByNameAsync(usuarioDTO.userName);
 
                 if (usuario != null)
                 {
@@ -87,6 +95,19 @@ namespace LaChozaComercial.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Login");
+        }
+
+        private bool ChequearEmail(string email)
+        {
+            try
+            {
+                var correo = new System.Net.Mail.MailAddress(email);
+                return correo.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

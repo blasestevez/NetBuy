@@ -20,3 +20,24 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+@font-face {
+    font-family: 'SamsungSharpSans';
+    src: url('/Source/Fonts/SamsungSharpSans.woff2') format('woff2'), url('/Sources/Fonts/SamsungSharpSans.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SamsungSharpSans';
+    src: url('/Source/Fonts/SamsungSharpSans-Bold.woff2') format('woff2'), url('/Sources/Fonts/SamsungSharpSans-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SamsungSharpSans';
+    src: url('/Source/Fonts/SamsungSharpSans-Medium.woff2') format('woff2'), url('/Sources/Fonts/SamsungSharpSans-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}

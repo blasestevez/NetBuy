@@ -1,4 +1,4 @@
-﻿@model LaChozaComercial.Models.Usuario
+﻿@model LaChozaComercial.Models.DTOs.CreateUsuarioRequestDTO
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -11,32 +11,32 @@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.UserName, "Nombre de Usuario", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Ingrese su nombre de usuario", required = "required" })
-                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                            @Html.LabelFor(u => u.userName, "Nombre de Usuario", new { @class = "form-label" })
+                            @Html.TextBoxFor(u => u.userName, new { @class = "form-control", placeholder = "Ingrese su nombre de usuario", required = "required" })
+                            @Html.ValidationMessageFor(u => u.userName, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-3">
-                            @Html.Label("contraseña", "Contraseña", new { @class = "form-label" })
-                            @Html.Password("contraseña", new { @class = "form-control", placeholder = "Ingrese su contraseña", required = "required" })
-                            @Html.ValidationMessage("contraseña", "", new { @class = "text-danger" })
+                            @Html.LabelFor(u => u.password, "Contraseña", new { @class = "form-label" })
+                            @Html.PasswordFor(u => u.password, new { @class = "form-control", placeholder = "Ingrese su contraseña", required = "required" })
+                            @Html.ValidationMessageFor(u => u.password, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.Email, "Email", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Ingrese su correo electrónico", required = "required" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            @Html.LabelFor(u => u.email, "Email", new { @class = "form-label" })
+                            @Html.TextBoxFor(u => u.email, new { @class = "form-control", placeholder = "Ingrese su correo electrónico", required = "required" })
+                            @Html.ValidationMessageFor(u => u.email, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.UserType, "Tipo de Usuario", new { @class = "form-label" })
-                            @Html.DropDownListFor(m => m.UserType,
+                            @Html.LabelFor(u => u.userType, "Tipo de Usuario", new { @class = "form-label" })
+                            @Html.DropDownListFor(u => u.userType,
                                      new List<SelectListItem>
                         {
                         new SelectListItem { Text = "Vendedor", Value = "true" },
                         new SelectListItem { Text = "Cliente", Value = "false" }
                         }, "-- Seleccione su tipo de usuario --", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.UserType, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(u => u.userType, "", new { @class = "text-danger" })
                         </div>
 
                         <div class="d-grid gap-2 mt-4">
