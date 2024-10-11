@@ -64,7 +64,7 @@ namespace LaChozaComercial
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Usuario}/{action=Registro}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

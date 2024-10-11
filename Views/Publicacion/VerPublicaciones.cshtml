@@ -1,34 +1,48 @@
 ﻿@model IEnumerable<LaChozaComercial.Models.DTOs.PublicacionDTO>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card shadow">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="card-title text-center flex-grow-1">Publicaciones</h2>
-                        <button class="btn btn-danger" onclick="location.href='@Url.Action("Logout", "Usuario")'">
-                            Cerrar Sesión
-                        </button>
-                    </div>
-
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                        @foreach (var publicacion in Model)
-                        {
-                            <div class="col">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">@publicacion.Titulo</h5>
-                                        <p class="card-text">@publicacion.Descripcion</p>
-                                        <p class="card-text"><strong>Precio:</strong> @publicacion.Precio</p>
-                                        <p class="card-text"><strong>Vendedor:</strong> @publicacion.vendedorNombre</p>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
+<div class="container-lg bg-white shadow border rounded px-4 py-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fs-4 fw-bold mb-0">Publicaciones</h2>
+        <div>
+            <button class="btn btn-danger fw-bold" onclick="location.href='@Url.Action("Logout", "Usuario")'">Cerrar Sesión</button>
         </div>
     </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            No hay publicaciones disponibles.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" style="max-height: 500px; overflow-y: auto; margin-top: 20px;">
+            @foreach (var publicacion in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 border" style="min-height: 320px;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@publicacion.Titulo</h5>
+                            <p class="card-text text-truncate" style="max-height: 4.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                @publicacion.Descripcion
+                            </p>
+                            <p class="card-text mt-auto"><strong>Precio:</strong> @publicacion.Precio</p>
+                            <p class="card-text mt-auto d-flex"><strong>Vendedor:</strong> <span class="ms-1">@publicacion.vendedorNombre</span></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+
+    .shadow {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+</style>

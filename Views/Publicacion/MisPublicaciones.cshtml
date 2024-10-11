@@ -1,41 +1,34 @@
 ﻿@model IEnumerable<LaChozaComercial.Models.DTOs.PublicacionDTO>
 
-<div class="max-w-7xl mx-auto bg-white shadow-lg border rounded-lg px-8 pt-6 pb-8 mb-4 text-center">
-    <h2 class="text-center text-2xl font-bold mb-4">Mis Publicaciones</h2>
+<div class="container-lg bg-white shadow border rounded px-4 py-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fs-4 fw-bold mb-0">Mis Publicaciones</h2>
+        <div>
+            <button class="btn btn-success fw-bold me-2" onclick="location.href='@Url.Action("CrearPublicacion", "Publicacion")'">Crear Publicación</button>
+            <button class="btn btn-danger fw-bold" onclick="location.href='@Url.Action("Logout", "Usuario")'">Cerrar Sesión</button>
+        </div>
+    </div>
 
-    <div class="grid-container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" style="max-height: 500px; overflow-y: auto; margin-top: 20px;">
         @foreach (var publicacion in Model)
         {
-            <div class="publicacion-item bg-gray-100 overflow-hidden">
-                <div class="p-4 border rounded">
-                    <h3 class="text-lg font-semibold mb-2">@publicacion.Titulo</h3>
-                    <p class="text-gray-700 mb-2">@publicacion.Descripcion</p>
-                    <p class="text-gray-700">Precio: @publicacion.Precio</p>
+            <div class="col">
+                <div class="card h-100 border" style="min-height: 320px;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@publicacion.Titulo</h5>
+                        <p class="card-text text-truncate" style="max-height: 4.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            @publicacion.Descripcion
+                        </p>
+                        <p class="card-text mt-auto"><strong>Precio:</strong> @publicacion.Precio</p>
+                    </div>
                 </div>
             </div>
         }
     </div>
-
-    <div class="mt-4">
-        <button class="bg-danger hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="location.href='@Url.Action("Logout", "Usuario")'">Cerrar Sesión</button>
-        <button class="bg-success hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2" onclick="location.href='@Url.Action("CrearPublicacion", "Publicacion")'">Crear Publicación</button>
-    </div>
 </div>
 
 <style>
-    .shadow-lg {
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra leve */
-    }
-
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-    }
-
-    .publicacion-item {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+    .shadow {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 </style>
