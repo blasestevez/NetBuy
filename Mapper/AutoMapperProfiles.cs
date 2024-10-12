@@ -17,7 +17,6 @@ namespace LaChozaComercial.Mapper
             CreateMap<Publicacion, CreatePublicacionRequestDTO>().ReverseMap();
 
             // Mapeo de usuarios
-
             CreateMap<UsuarioDTO, Usuario>().ReverseMap();
 
             CreateMap<CreateUsuarioRequestDTO, Usuario>()
