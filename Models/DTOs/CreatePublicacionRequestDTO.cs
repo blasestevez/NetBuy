@@ -1,25 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LaChozaComercial.Models
+namespace LaChozaComercial.Models.DTOs
 {
-    public class Publicacion
+    public class CreatePublicacionRequestDTO
     {
-        [Required]
-        [Key]
-        public Guid Id { get; set; }
         [Required]
         public string Titulo { get; set; }
         [Required]
         public string Descripcion { get; set; }
         [Required]
-        [Column(TypeName = "decimal(18,2)")]
         public decimal Precio { get; set; }
-
         [Required]
         public string usuarioId { get; set; }
-
-        [ForeignKey("usuarioId")]
-        public Usuario autorPublicacion { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LaChozaComercial.Models;
+using LaChozaComercial.Models.DTOs;
 using LaChozaComercial.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,33 +11,45 @@ namespace LaChozaComercial.Controllers
     {
         private readonly IUsuarioRepository usuarioRepository;
         private readonly SignInManager<Usuario> signInManager;
+        private readonly UserManager<Usuario> userManager;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository, SignInManager<Usuario> signInManager)
+        public UsuarioController(IUsuarioRepository usuarioRepository, SignInManager<Usuario> signInManager, UserManager<Usuario> userManager)
         {
             this.usuarioRepository = usuarioRepository;
             this.signInManager = signInManager;
+            this.userManager = userManager;
         }
 
-        // Vista de Registro
         public ActionResult Registro()
         {
             return View();
         }
 
-        // Método de registro con contraseña
+        // Registra un usuario obteniendo los datos del formulario de la vista de registro
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registro(Usuario usuario, string contraseña)
+        public async Task<IActionResult> Registro(CreateUsuarioRequestDTO usuarioRequestDTO)
         {
+            // Si el modelo enviado por el formulario es valido
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var nuevoUsuario = await usuarioRepository.RegisterUserAsync(usuario, contraseña);
+                    // Verifica que el mail ingresado no sea válido
+                    if (!ChequearEmail(usuarioRequestDTO.email))
+                    {
+                        ModelState.AddModelError("Email", "El email proporcionado no es válido.");
+                        return View(usuarioRequestDTO);
+                    }
+                    // Si es válido se le envia el DTO del usuario a registar al repositorio
+                    var nuevoUsuario = await usuarioRepository.RegisterUserAsync(usuarioRequestDTO);
+
+                    // Si el registro fue exitoso se redirecciona a la vista de Login
                     if (nuevoUsuario != null)
                     {
                         return RedirectToAction("Login");
                     }
+                    // Si hubo un error en el registro se muestra un error
                     ModelState.AddModelError(string.Empty, "Error al registrar el usuario");
                 }
                 catch (Exception ex)
@@ -44,36 +57,39 @@ namespace LaChozaComercial.Controllers
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
-            return View(usuario);
+            return View(usuarioRequestDTO);
         }
 
-        // Vista de Login
         public ActionResult Login()
         {
             return View();
         }
 
-        // Método para manejar el inicio de sesión
+        // Inicio de sesión
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string nombreUsuario, string contraseña)
+        public async Task<IActionResult> Login(UsuarioDTO usuarioDTO)
         {
-            var result = await signInManager.PasswordSignInAsync(nombreUsuario, contraseña, isPersistent: false, lockoutOnFailure: false);
+            // Se le envia el DTO recibido del formulario al repositorio
+            var result = await signInManager.PasswordSignInAsync(usuarioDTO.userName, usuarioDTO.password, isPersistent: false, lockoutOnFailure: false);
+            
+            // Si el inicio de sesión fue exitoso
             if (result.Succeeded)
             {
-                // Ya no necesitas buscar el usuario de nuevo, ya que el SignInManager lo maneja.
-                var usuario = await usuarioRepository.LoginUserAsync(nombreUsuario, contraseña);
+                // Se busca el nombre del usuario con el UserManager
+                var usuario = await userManager.FindByNameAsync(usuarioDTO.userName);
 
+                // Si el usuario existe
                 if (usuario != null)
                 {
-                    // Redireccionar según el tipo de usuario
-                    if (usuario.UserType) // Asumiendo que UserType es un bool
+                    // Redirecciona a la vista segun el tipo del usuario
+                    if (usuario.UserType)
                     {
-                        return RedirectToAction("MisPublicaciones", "Publicacion"); // Vendedor
+                        return RedirectToAction("MisPublicaciones", "Publicacion"); // Vista de vendedor
                     }
                     else
                     {
-                        return RedirectToAction("VerPublicaciones", "Publicacion"); // Cliente
+                        return RedirectToAction("VerPublicaciones", "Publicacion"); // Vista de cliente
                     }
                 }
             }
@@ -82,11 +98,25 @@ namespace LaChozaComercial.Controllers
             return View();
         }
 
-        // Método de logout
+        // Cerrar sesión
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Login");
+        }
+
+        // Función para chequear si el email es válido
+        private bool ChequearEmail(string email)
+        {
+            try
+            {
+                var correo = new System.Net.Mail.MailAddress(email);
+                return correo.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

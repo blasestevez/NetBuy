@@ -1,3 +1,4 @@
+using AutoMapper;
 using LaChozaComercial.Data;
 using LaChozaComercial.Models;
 using LaChozaComercial.Repositories;
@@ -18,13 +19,15 @@ namespace LaChozaComercial
             builder.Services.AddDbContext<LaChozaComercialDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddAutoMapper(typeof(Program));
+
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IPublicacionRepository, PublicacionRepository>();
 
 
             builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
             {
-                options.Password.RequireDigit = true; // No requerir dígitos
+                options.Password.RequireDigit = false; // No requerir dígitos
                 options.Password.RequireLowercase = true; // No requerir minúsculas
                 options.Password.RequireNonAlphanumeric = false; // No requerir caracteres no alfanuméricos
                 options.Password.RequireUppercase = true; // No requerir mayúsculas
@@ -61,7 +64,7 @@ namespace LaChozaComercial
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Usuario}/{action=Registro}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

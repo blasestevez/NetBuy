@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+    <div class="text-center">
+        <h1 class="display-3 fw-bold mb-4">Bienvenido a LaChozaComercial</h1>
+        <p class="lead mb-5">La mejor plataforma para comprar y vender productos locales.</p>
+        <div>
+            <a href="@Url.Action("Registro", "Usuario")" class="btn btn-primary btn-lg me-3 fw-bold">Registrarse</a>
+            <a href="@Url.Action("Login", "Usuario")" class="btn btn-outline-secondary btn-lg fw-bold">Iniciar Sesión</a>
+        </div>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>

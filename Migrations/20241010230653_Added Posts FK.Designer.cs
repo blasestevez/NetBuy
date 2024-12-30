@@ -4,6 +4,7 @@ using LaChozaComercial.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaChozaComercial.Migrations
 {
     [DbContext(typeof(LaChozaComercialDbContext))]
-    partial class LaChozaComercialDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241010230653_Added Posts FK")]
+    partial class AddedPostsFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

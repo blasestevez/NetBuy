@@ -1,5 +1,7 @@
-﻿using LaChozaComercial.Data;
+﻿using AutoMapper;
+using LaChozaComercial.Data;
 using LaChozaComercial.Models;
+using LaChozaComercial.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,48 +13,59 @@ namespace LaChozaComercial.Repositories
     {
         private readonly LaChozaComercialDbContext dbContext;
         private readonly UserManager<Usuario> userManager;
+        private readonly IMapper mapper;
 
-        public UsuarioRepository(LaChozaComercialDbContext dbContext, UserManager<Usuario> userManager)
+        public UsuarioRepository(LaChozaComercialDbContext dbContext, UserManager<Usuario> userManager, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
-        // Registro de un nuevo usuario con UserManager y DbContext
-        public async Task<Usuario> RegisterUserAsync(Usuario usuario, string contraseña)
+        // Registro de usuario tomando como parámetro un DTO enviado por el controlador
+        public async Task<UsuarioDTO> RegisterUserAsync(CreateUsuarioRequestDTO usuarioRequestDTO)
         {
-            // Crear el usuario usando el UserManager
-            var result = await userManager.CreateAsync(usuario, contraseña);
+            // Mapea el DTO como Domain Model
+            var usuario = mapper.Map<Usuario>(usuarioRequestDTO);
 
-            // Verificar si la creación fue exitosa
+            // Crea el usuario utilizando el Domain Model
+            var result = await userManager.CreateAsync(usuario, usuarioRequestDTO.password);
+
+            // Verifica si la creacion fue exitosa
             if (result.Succeeded)
             {
-                // No necesitas agregar el usuario de nuevo al DbContext
-                // return usuario; // Puedes retornar el usuario aquí si lo necesitas
-                return usuario; // Ya está agregado al DbContext
+                // Devuelve el usuario mapeado como DTO
+                return mapper.Map<UsuarioDTO>(usuario); 
             }
 
-            // Lanzar una excepción si hubo errores
+            // Lanza una excepción si hubo errores
             throw new Exception("Error al registrar el usuario: " + string.Join(", ", result.Errors.Select(e => e.Description)));
         }
 
 
-        // Iniciar sesión y devolver el usuario si la autenticación es correcta
-        public async Task<Usuario> LoginUserAsync(string nombreUsuario, string contraseña)
+        // Inicio de sesión tomando como parámetro un nombre de usuario y una contraseña enviadas por el controlador
+        public async Task<UsuarioDTO> LoginUserAsync(string nombreUsuario, string contraseña)
         {
+            // Busca en la base de datos si el usuario existe
             var usuario = await dbContext.Usuarios.FirstOrDefaultAsync(u => u.UserName == nombreUsuario);
+            
+            // Si el usuario no existe
             if (usuario == null)
             {
                 throw new Exception("Usuario no encontrado");
             }
 
+            // Si el usuario existe chequea que la contraseña sea válida en el usuario de Identity
             var isPasswordValid = await userManager.CheckPasswordAsync(usuario, contraseña);
+            
+            // Si la contraseña no es correcta
             if (!isPasswordValid)
             {
                 throw new Exception("Contraseña incorrecta");
             }
 
-            return usuario;
+            // Si el inicio de sesión fue exitoso, devuelve el usuario mapeado como DTO
+            return mapper.Map<UsuarioDTO>(usuario);
         }
     }
 }

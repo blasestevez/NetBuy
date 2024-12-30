@@ -1,12 +1,13 @@
 ﻿using LaChozaComercial.Models;
+using LaChozaComercial.Models.DTOs;
 
 namespace LaChozaComercial.Repositories
 {
     public interface IPublicacionRepository
     {
-        Task<IEnumerable<Publicacion>> GetMisPublicacionesAsync(string nombreVendedor);
-        Task<Publicacion> CreatePublicacionAsync(Publicacion publicacion);
-        Task<IEnumerable<Publicacion>> GetPublicacionesAsync();
+        Task<List<PublicacionDTO>> GetMisPublicacionesAsync(string usuarioId);
+        Task<PublicacionDTO> CreatePublicacionAsync(CreatePublicacionRequestDTO createPublicacionDTO);
+        Task<List<PublicacionDTO>> GetPublicacionesAsync();
 
     }
 }
