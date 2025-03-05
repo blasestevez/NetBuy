@@ -13,10 +13,9 @@ namespace LaChozaComercial
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<LaChozaComercialDbContext>(options =>
+            builder.Services.AddDbContext<NetBuyDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddAutoMapper(typeof(Program));
@@ -27,14 +26,14 @@ namespace LaChozaComercial
 
             builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
             {
-                options.Password.RequireDigit = false; // No requerir dígitos
-                options.Password.RequireLowercase = true; // No requerir minúsculas
-                options.Password.RequireNonAlphanumeric = false; // No requerir caracteres no alfanuméricos
-                options.Password.RequireUppercase = true; // No requerir mayúsculas
-                options.Password.RequiredLength = 6; // Longitud mínima
-                options.Password.RequiredUniqueChars = 0; // Cantidad de caracteres únicos requeridos
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
             })
-                .AddEntityFrameworkStores<LaChozaComercialDbContext>()
+                .AddEntityFrameworkStores<NetBuyDbContext>()
                 .AddDefaultTokenProviders();
 
 

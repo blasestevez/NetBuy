@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaChozaComercial.Migrations
 {
-    [DbContext(typeof(LaChozaComercialDbContext))]
+    [DbContext(typeof(NetBuyDbContext))]
     partial class LaChozaComercialDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

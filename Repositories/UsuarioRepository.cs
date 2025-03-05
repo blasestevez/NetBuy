@@ -11,11 +11,11 @@ namespace LaChozaComercial.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        private readonly LaChozaComercialDbContext dbContext;
+        private readonly NetBuyDbContext dbContext;
         private readonly UserManager<Usuario> userManager;
         private readonly IMapper mapper;
 
-        public UsuarioRepository(LaChozaComercialDbContext dbContext, UserManager<Usuario> userManager, IMapper mapper)
+        public UsuarioRepository(NetBuyDbContext dbContext, UserManager<Usuario> userManager, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;

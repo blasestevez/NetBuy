@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LaChozaComercial.Migrations
 {
-    [DbContext(typeof(LaChozaComercialDbContext))]
+    [DbContext(typeof(NetBuyDbContext))]
     [Migration("20241010114611_Cambio Atributo Precio")]
     partial class CambioAtributoPrecio
     {

@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaChozaComercial.Data
 {
-    public class LaChozaComercialDbContext : IdentityDbContext<IdentityUser>
+    public class NetBuyDbContext : IdentityDbContext<IdentityUser>
     {
-        public LaChozaComercialDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public NetBuyDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
             
         }
