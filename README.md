@@ -1,8 +1,8 @@
-# LaChozaComercial
+# NetBuy
 
 > Platform to connect sellers and buyers through product listings.
 
-**LaChozaComercial** is a web application designed to facilitate interactions between sellers and buyers. It allows managing product listings with title, description, and price, ensuring a secure and efficient user experience using ASP.NET Identity.
+**NetBuy** is a web application designed to facilitate interactions between sellers and buyers. It allows managing product listings with title, description, and price, ensuring a secure and efficient user experience using ASP.NET Identity.
 
 ---
 
@@ -54,7 +54,7 @@ Make sure you have the following installed on your machine:
 
 1. Clone the repository:
    ```shell
-   git clone https://github.com/yourusername/LaChozaComercial.git
+   git clone https://github.com/yourusername/NetBuy.git
    cd LaChozaComercial
    ```
 
@@ -62,7 +62,7 @@ Make sure you have the following installed on your machine:
    - Open the `appsettings.json` file and adjust the connection string:
      ```json
      "ConnectionStrings": {
-       "DefaultConnection": "Server=YOUR_SERVER;Database=LaChozaComercial;Trusted_Connection=True;"
+       "DefaultConnection": "Server=YOUR_SERVER;Database=NetBuyDB;Trusted_Connection=True;TrustServerCertificate=True;"
      }
      ```
 
@@ -85,7 +85,7 @@ If you want to contribute to this project, follow the steps below:
 
 1. Fork the repository:
    ```shell
-   git fork https://github.com/blaso333/LaChozaComercial.git
+   git fork https://github.com/blasestevez/NetBuy.git
    ```
 
 2. Create a feature branch:
