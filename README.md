@@ -2,6 +2,8 @@
 
 This was my first web project, created as part of a school assignment. During its development, I learned the fundamentals of web development using modern technologies and scalable architecture approaches.
 
+![Imagen de NetBuy](https://raw.githubusercontent.com/blasestevez/NetBuy/refs/heads/master/CnP_04032025_224454.png)
+
 ---
 
 ## Features
