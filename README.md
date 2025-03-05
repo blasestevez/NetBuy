@@ -1,8 +1,6 @@
 # NetBuy
 
-> Platform to connect sellers and buyers through product listings.
-
-**NetBuy** is a web application designed to facilitate interactions between sellers and buyers. It allows managing product listings with title, description, and price, ensuring a secure and efficient user experience using ASP.NET Identity.
+This was my first web project, created as part of a school assignment. During its development, I learned the fundamentals of web development using modern technologies and scalable architecture approaches.
 
 ---
 
