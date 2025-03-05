@@ -75,32 +75,3 @@ Make sure you have the following installed on your machine:
    ```shell
    dotnet run
    ```
-
----
-
-
-## Contributing
-
-If you want to contribute to this project, follow the steps below:
-
-1. Fork the repository:
-   ```shell
-   git fork https://github.com/blasestevez/NetBuy.git
-   ```
-
-2. Create a feature branch:
-   ```shell
-   git checkout -b feature/your-feature-name
-   ```
-
-3. Commit your changes:
-   ```shell
-   git commit -m "Add your detailed commit message here"
-   ```
-
-4. Push the branch:
-   ```shell
-   git push origin feature/your-feature-name
-   ```
-
-5. Open a pull request and describe your changes.
